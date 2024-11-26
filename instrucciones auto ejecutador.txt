@@ -1,0 +1,13 @@
+El comando es:
+
+python3 copiar_fotos.py
+
+Copia desde 000 hasta 999, meter en fotos.txt los numero ejemplo:
+001
+576
+123
+543
+
+El Programa leerá todos los números, copiara los archivos de las fotos ya sean .jpg o .nef de la carpeta de origen a la de destino.
+
+El ejecutable, la carpeta de origen, la carpeta de destino y el archivo.txt deben estar en la misma carpeta.

@@ -1,0 +1,7 @@
+Si quieres modificar el script primero instala Python, pruébalo ejecutadolo desde la terminal y luego ejecuta lo siguiente para convertirlo en un ejecutable nuevamente.
+
+Solo hacer en un MacBook que nunca se ha hecho
+pip3 install pyinstaller
+
+Convertirlo en app:
+python3 -m PyInstaller --onefile copiar_fotos.py
