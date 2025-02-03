@@ -21,18 +21,18 @@ destino = os.path.join(script_dir, destino)
 # Crear la carpeta de destino si no existe
 if not os.path.exists(destino):
     os.makedirs(destino, exist_ok=True)
-    print("Se ha creado la carpeta.")
+    print(f"Se ha creado la carpeta {destino}.")
 else:
-    print("La carpeta ya existía.")
+    print(f"La carpeta {destino} ya existía.")
 
 # Verificar si el archivo de texto existe
 if not os.path.exists(archivo_texto):
-    print("No se ha encontrado el archivo de texto.")
+    print(f"No se ha encontrado el archivo de texto: {archivo_texto}")
     sys.exit()
 
 # Verificar si la carpeta de origen existe
 if not os.path.exists(origen):
-    print("No se ha encontrado la carpeta de origen.")
+    print(f"No se ha encontrado la carpeta de origen: {origen}")
     sys.exit()
 
 # Leer el archivo de texto y obtener los números de las fotos
@@ -45,22 +45,45 @@ no_copiados = []
 
 # Recorrer las fotos y copiarlas a la carpeta de destino
 for foto in fotos:
-    archivo_jpg = f'DSC_0{foto}.JPG'
-    archivo_nef = f'DSC_0{foto}.NEF'
-    archivo_origen_jpg = os.path.join(origen, archivo_jpg)
-    archivo_origen_nef = os.path.join(origen, archivo_nef)
+    # Rellenar con ceros a la izquierda para formar 4 dígitos
+    foto_formateada = foto.zfill(4)
+    
+    # Posibles nombres de archivo (con o sin guion bajo al principio)
+    archivo_jpg_1 = f'DSC_{foto_formateada}.JPG'
+    archivo_nef_1 = f'DSC_{foto_formateada}.NEF'
+    archivo_jpg_2 = f'_DSC{foto_formateada}.JPG'
+    archivo_nef_2 = f'_DSC{foto_formateada}.NEF'
+
+    archivo_origen_jpg_1 = os.path.join(origen, archivo_jpg_1)
+    archivo_origen_nef_1 = os.path.join(origen, archivo_nef_1)
+    archivo_origen_jpg_2 = os.path.join(origen, archivo_jpg_2)
+    archivo_origen_nef_2 = os.path.join(origen, archivo_nef_2)
     
     # Copiar archivos si existen
     copiado = False
-    if os.path.exists(archivo_origen_jpg):
-        shutil.copy(archivo_origen_jpg, destino)
+    if os.path.exists(archivo_origen_jpg_1):
+        shutil.copy2(archivo_origen_jpg_1, destino)
         copiados_jpg += 1
         copiado = True
+        print(f"Copiado: {archivo_jpg_1}")
         
-    if os.path.exists(archivo_origen_nef):
-        shutil.copy(archivo_origen_nef, destino)
+    if os.path.exists(archivo_origen_nef_1):
+        shutil.copy2(archivo_origen_nef_1, destino)
         copiados_nef += 1
         copiado = True
+        print(f"Copiado: {archivo_nef_1}")
+
+    if os.path.exists(archivo_origen_jpg_2):
+        shutil.copy2(archivo_origen_jpg_2, destino)
+        copiados_jpg += 1
+        copiado = True
+        print(f"Copiado: {archivo_jpg_2}")
+
+    if os.path.exists(archivo_origen_nef_2):
+        shutil.copy2(archivo_origen_nef_2, destino)
+        copiados_nef += 1
+        copiado = True
+        print(f"Copiado: {archivo_nef_2}")
     
     # Añadir a la lista de no copiados si ninguno se copió
     if not copiado:
@@ -73,5 +96,4 @@ print(f"Se han copiado {copiados_nef} fotos .nef.")
 if no_copiados:
     print("No se han copiado los siguientes archivos:")
     for archivo in no_copiados:
-        print(f'DSC_0{archivo}.JPG y DSC_0{archivo}.NEF')
-
+        print(f'DSC_{archivo.zfill(4)}.JPG y DSC_{archivo.zfill(4)}.NEF')
